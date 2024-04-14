@@ -1,6 +1,6 @@
 # DiagnosisAssistant
-2024학년도 1학기 전남대학교 일반대학원 빅데이터분석 수업 프로젝트 레포지토리입니다.
-본 서비스는 Association Rule Mining(ARM)을 기반으로 사용자가 입력한 증상과 가장 유사한 증상을 보이는 질환을 반환합니다. 이를 통해 사용자가 내원하지 않고 적은 비용으로 자신의 증상에 대한 질환을 탐색할 수 있도록 합니다.
+- 2024학년도 1학기 전남대학교 일반대학원 빅데이터분석 수업 프로젝트 레포지토리입니다.  
+- 본 서비스는 Association Rule Mining(ARM)을 기반으로 사용자가 입력한 증상과 가장 유사한 증상을 보이는 질환을 반환합니다. 이를 통해 사용자가 내원하지 않고 적은 비용으로 자신의 증상에 대한 질환을 탐색할 수 있도록 합니다.
 
 ### 1. Crowling
 1. Selenium을 활용하여 [서울대학교 병원](http://www.snuh.org/health/nMedInfo/nList.do?searchNWord=&sortType=A)과 [서울아산병원](https://www.amc.seoul.kr/asan/healthinfo/disease/diseaseSubmain.do)의 데이터를 수집합니다.
