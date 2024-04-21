@@ -77,24 +77,17 @@ def left_right_combi(rules, keyword_combi):
 
 
 def match_score(disease, df, user_symptoms):
-    import numpy as np
     score = 0
+    count = 0
     for i in range(len(df)):
         if df["질환명"][i] == disease:
-            length = len(df["증상 키워드"][i])
-            
-            if set(user_symptoms).issubset(set(df["증상 키워드"][i])):
-                score += (len(user_symptoms))
-                
+            symp_dict = eval(df["증상 등장 빈도"][i])[0]
             for symptom in user_symptoms:
-                
-                if symptom in df["증상 키워드"][i]:
-                    score += 1
-                else:
-                    length += 1
-
-    score = (score / length) * 100
-    return score
+                if symptom in symp_dict.keys():
+                    score += symp_dict[symptom]
+                    count += 1
+    score = score * count
+    return int(score)
 
 
 def find_matches(df , user_symptoms, item_sets):
@@ -125,21 +118,21 @@ def print_results(df, user_symptoms, item_sets):
         scores = sorted(list(best_matches.values()), reverse=True)
         for score in scores:
             best = list(best_matches.keys())[list(best_matches.values()).index(score)]
-            print(f"입력하신 증상에 대해 가장 적합한 질환은 {best}이며, 일치도는 {score:.2f}% 입니다.")
+            print(f"입력하신 증상에 대해 가장 적합한 질환은 {best}이며, 일치점수는 {score}점입니다.")
             results[best] = score
             
     if len(able_diseases) != 0:
         scores = sorted(list(able_diseases.values()), reverse=True)
         for score in scores:
             able = list(able_diseases.keys())[list(able_diseases.values()).index(score)]
-            print(f"ARM 기반 입력하신 증상에 대해 가능성 있는 질환은 {able}이며, 일치도는 {score:.2f}% 입니다.")
+            print(f"ARM 기반 입력하신 증상에 대해 가능성 있는 질환은 {able}이며, 일치점수는 {score}점입니다.")
             results[able] = score
             
     if len(able_df_disases) != 0:
         scores = sorted(list(able_df_disases.values()), reverse=True)
         for score in scores:
             able_df = list(able_df_disases.keys())[list(able_df_disases.values()).index(score)]
-            print(f"Dataframe 내 탐색 기반 입력하신 증상에 대해 가능성 있는 질환은 {able_df}, 일치도는 {score:.2f}% 입니다.")
+            print(f"Dataframe 내 탐색 기반 입력하신 증상에 대해 가능성 있는 질환은 {able_df}, 일치점수는 {score}점입니다.")
             results[able_df] = score
     print("")
     return results
@@ -164,8 +157,10 @@ def predict_disease(df, user_symptoms, item_sets):
     for i in range(3):
         if i < len(sorted_results):
             print(f"{i+1}순위 질환은 {sorted_results[i]}입니다.")
-            print(f"{sorted_results[i]}의 증상은 {df[df['질환명'] == sorted_results[i]]['증상 키워드'].values[0]} 입니다.")
-            print(f"증상 일치도는 {results[sorted_results[i]]:.2f}% 입니다.")
+            temp_dict = eval(df[df['질환명'] == sorted_results[i]]['증상 등장 빈도'].values[0])[0]
+            temp_dict = sorted(temp_dict.items(), key=lambda x: x[1], reverse=True)
+            print(f"{sorted_results[i]}의 증상은 {temp_dict} 입니다.")
+            print(f"증상 일치점수는 {results[sorted_results[i]]}점입니다.")
             print(f"자세한 정보는 아래 링크에서 확인하실 수 있습니다.")
             print(df[df['질환명'] == sorted_results[i]]['URL1'].values[0])
             print(df[df['질환명'] == sorted_results[i]]['URL2'].values[0])
@@ -204,7 +199,7 @@ def disease_info(df, sorted_results):
             
             
 def main():
-    df = pd.read_csv('./crowling/merged_crowling_ver_2.csv', encoding='utf-8')
+    df = pd.read_csv('./crowling/merged_crowling_ver_3.csv', encoding='utf-8')
     user_symptoms = input("증상을 입력하세요: ").replace(" ", "").split(",")
     
     
