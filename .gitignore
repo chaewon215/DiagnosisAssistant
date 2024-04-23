@@ -2,4 +2,11 @@ crowling/chromedriver-win64
 ARM.ipynb
 crowling/crowling.ipynb
 *.pdf
+
+final_report/IEEEtran.cls
+
+!final_report/latex
+final_report/latex/*
+!final_report/latex/final_report.pdf
+
 *.zip
