@@ -183,7 +183,7 @@ def disease_info(df, sorted_results):
     for col in cols:
         
         info = df[df['질환명'] == desc_input][col].values[0]
-        if not pd.isna(info) and info != "nan":
+        if not pd.isna(info) and "\n\n" not in info and "nan" not in info:
             print(f"========={col}=========")
             print(info)
 
@@ -193,6 +193,3 @@ def disease_info(df, sorted_results):
     if visit:
         print("****안내****")
         print(f"{desc_input}은 내원이 요구되는 질환입니다. 빠른 시일 내 병원을 방문해주세요.")
-        
-            
-            
